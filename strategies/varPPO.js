@@ -2,12 +2,20 @@
 var _ = require('lodash');
 var log = require('../core/log');
 
+var util = require('../core/util');
+var fs = require('fs');
+var toml = require('toml');
+var getConfig = function(strat) {
+   return toml.parse(fs.readFileSync(util.dirs().config + 'strategies/' + strat + '.toml'));
+};
+
 // configuration
 var config = require('../core/util').getConfig();
 var settings = config.varPPO;
 var momentum = settings.momentum;
 var momentumName = momentum.toLowerCase();
-var momentumSettings = config[momentum];
+var momentumSettings = getConfig(settings.momentum);
+config.PPO = getConfig('PPO');
 
 // let's create our own method
 var method = {};

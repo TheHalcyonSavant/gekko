@@ -9,7 +9,7 @@ var mixin = {
     }    
   },
   methods: {
-    scan: function() {
+    scan: function(finished) {
       this.datasetScanstate = 'scanning';
 
       post('scansets', {}, (error, response) => {
@@ -52,6 +52,7 @@ var mixin = {
         }).reverse();
 
         this.datasets = sets;
+        finished && finished();
       })
     }
   }
