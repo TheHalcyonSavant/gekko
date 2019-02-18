@@ -21,7 +21,7 @@ export default function(_data, _trades, _height) {
 
   const data = _data.map(c => {
     return {
-      price: c.open,
+      price: c.close,
       date: toDate(c.start)
     }
   });
@@ -112,6 +112,10 @@ export default function(_data, _trades, _height) {
       .attr("transform", "translate(0," + height2 + ")")
       .call(xAxis2);
 
+  var tooltip = d3.select('body').append('div')
+    .attr('class', 'tooltip')
+    .style('opacity', 0);
+
   var circles = svg
     .append('g')
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
@@ -119,9 +123,22 @@ export default function(_data, _trades, _height) {
       .data(trades)
       .enter().append("circle")
         .attr('class', function(d) { return d.action })
-        .attr("cx", function(d) { return x(d.date); })
-        .attr("cy", function(d) { return y(d.price); })
-        .attr('r', 5);
+        .attr('cx', function(d) { return x(d.date); })
+        .attr('cy', function(d) { return y(d.price); })
+        .attr('r', 5)
+        .on('mouseover', function(d) {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', .9);
+          tooltip.html(d3.timeFormat('%e %B')(d.date) + '<br/>'  + d.price)
+            .style('left', (d3.event.pageX) + 'px')
+            .style('top', (d3.event.pageY - 62) + 'px');
+        })
+        .on('mouseout', function(d) {
+          tooltip.transition()
+            .duration(500)
+            .style('opacity', 0);
+        });
 
   var brushCircles = context
     .append('g')

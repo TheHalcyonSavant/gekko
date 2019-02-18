@@ -27,6 +27,10 @@ WORKDIR ../
 # Bundle app source
 COPY . /usr/src/app
 
+# Prepare for Gekko-BacktestTool
+RUN apt-get -qq update && apt-get install -y -qq cpanminus nano
+RUN cpanm -qn Parallel::ForkManager Time::ParseDate Time::Elapsed Getopt::Long List::MoreUtils File::chdir Statistics::Basic DBI DBD::SQLite JSON::XS TOML File::Basename File::Find::Wanted Template LWP::UserAgent LWP::Protocol::https Set::CrossProduct DBD::CSV Text::Table File::Copy
+
 EXPOSE 3000
 RUN chmod +x /usr/src/app/docker-entrypoint.sh
 ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]

@@ -101,4 +101,14 @@ export default {
   fill: red;
 }
 
+body > .tooltip {
+  position: absolute;
+  padding: .4em;
+  margin: .4em;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
 </style>

@@ -42,6 +42,7 @@ div
         div
           label(for='customTo') To:
           input(v-model='customTo')
+        a.btn--primary(href='#', v-on:click.prevent='setMyRange') My range
 
     em(v-else) No Data found 
       a(href='#/data/importer') Lets add some
@@ -66,9 +67,15 @@ export default {
       setIndex: -1,
       customTo: false,
       customFrom: false,
-      rangeVisible: false,
+      rangeVisible: true,
       set: false
     };
+  },
+  beforeMount: function() {
+    var that = this;
+    this.scan(() => {
+      that.setIndex = 0;
+    });
   },
   mixins: [ dataset ],
   methods: {
@@ -103,6 +110,10 @@ export default {
       }
 
       this.$emit('dataset', set);
+    },
+    setMyRange: function() {
+      this.customFrom = '2018-01-18 08:00';
+      this.customTo = '2018-05-01 01:00';
     }
   },
   watch: {
